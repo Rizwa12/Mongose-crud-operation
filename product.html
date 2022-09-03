@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- <script src="./libs/axios.min.js"></script> -->
+    <style>
+        #productList {
+            display: flex;
+        }
+
+        #productList>div {
+            border: 1px solid black;
+            width: 220px;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            font-family: sans-serif;
+        }
+
+        #productList>div:hover {
+            box-shadow: 0px 0px 10px black;
+        }
+
+        #productList>div>p>span:nth-child(2) {
+            font-size: 32px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Ali Express</h1>
+    <a href="./index.html">Home</a>
+    <a href="./product.html">All Products</a>
+    <div id="productList">
+
+
+
+
+    </div>
+
+
+
+
+
+    <p id="message"></p>
+
+
+
+    <script>
+        async function getAllProducts() {
+            try {
+                const response = await axios.get("http://localhost:3000/products");
+                console.log(response.data.data); //?
+                let productList = document.querySelector("#productList")
+                response.data.data.map(eachProduct => {
+                    productList.innerHTML += `<div>
+        <img src ="./img/images.jpg" alt ="">
+        <p>${eachProduct.productName}</p>
+        
+        <p><span>${eachProduct.currencyCode}</span>
+            <span>${eachProduct.productPrice}</span>
+        </p>
+        <p>${eachProduct.numberOfSale || 0}sold</p>
+        <p>${(eachProduct.isFreeShipping)?"free shipping":""}</p>
+        <p>${eachProduct.shopName}</p>
+    </div>`
+    //ternary operator 
+    //foreach loop 
+    //loop
+
+                })
+
+            }
+
+            catch (error) {
+                console.log(error);
+            }
+
+        }
+        getAllProducts();
+
+
+
+
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>
