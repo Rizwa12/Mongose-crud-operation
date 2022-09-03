@@ -52,9 +52,20 @@
 
 
     <script>
+
+        console.log(window.location.href);
+        let baseUrl;
+        if (window.location.href.indexOf("https") === -1) {
+            baseUrl = "http://localhost:3000";
+        }
+        else {
+            baseUrl = "https://e-commerce-crud-operation.herokuapp.com/";
+        }
+
+
         async function getAllProducts() {
             try {
-                const response = await axios.get("http://localhost:3000/products");
+                const response = await axios.get(baseUrl+"/products");
                 console.log(response.data.data); //?
                 let productList = document.querySelector("#productList")
                 response.data.data.map(eachProduct => {
@@ -66,12 +77,12 @@
             <span>${eachProduct.productPrice}</span>
         </p>
         <p>${eachProduct.numberOfSale || 0}sold</p>
-        <p>${(eachProduct.isFreeShipping)?"free shipping":""}</p>
+        <p>${(eachProduct.isFreeShipping) ? "free shipping" : ""}</p>
         <p>${eachProduct.shopName}</p>
     </div>`
-    //ternary operator 
-    //foreach loop 
-    //loop
+                    //ternary operator 
+                    //foreach loop 
+                    //loop
 
                 })
 
