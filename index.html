@@ -60,6 +60,17 @@
     <script>
 
       
+      console.log(window.location.href);
+      let baseUrl;
+      if(window.location.href.indexOf("https")===-1)
+      {
+        baseUrl = "http://localhost:3000";
+      }
+      else
+      {
+        baseUrl = "https://e-commerce-crud-operation.herokuapp.com/";
+      }
+
 
         function createProduct() {
 
@@ -72,7 +83,7 @@
             let shopName = document.querySelector("#shopName").value;
 
 
-            axios.post('http://localhost:3000/product', {
+            axios.post(`${baseUrl}/product`, {
                 productName,
                 productPrice,
                 currencyCode,
