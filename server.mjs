@@ -2,6 +2,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors'
+
 const productSchema = new mongoose.Schema({
     productName: String,
     productPrice: Number,
@@ -18,7 +19,7 @@ let app = express();
 app.use(express.json());
 app.use(cors());
 
-//get all products
+
 app.get("/products", async (req, res) => {
 
     let result = await productModel
@@ -35,7 +36,7 @@ app.get("/products", async (req, res) => {
         data: result
     });
 });
-//get product by id 
+
 app.get("/product/:id", async (req, res) => {
 
     let result = await productModel
@@ -53,7 +54,7 @@ app.get("/product/:id", async (req, res) => {
     });
 });
 
-//Add product
+
 app.post("/product", async (req, res) => {
 
     let body = req.body;
@@ -99,7 +100,7 @@ app.post("/product", async (req, res) => {
     console.log("result: ", result);
     res.send({ message: "product is added in database" });
 });
-//delete product
+
 app.delete("/product/:id", async (req, res) => {
 
     let _id = req.params.id;
@@ -122,28 +123,26 @@ app.delete("/product/:id", async (req, res) => {
 
 
 })
-//update product
-app.put("/product/:id",async(req,res)=>{
+app.put("/product/:id", async (req, res) => {
+
     let _id = req.params.id;
     let body = req.body;
-    try{
-        const result = await productModel.findByIdAndUpdate(_id,body);
-        console.log("updated product:",result);
+
+    try {
+        const result = await productModel.findByIdAndUpdate(_id, body);
+        console.log("updated product: ", result);
         res.send({
-            message:"updated"
+            message: "updated"
         });
         return;
 
-    }catch(err){
+    } catch (err) {
         console.log(err)
-        res.status(500).send(
-            {
-                message: "db error"
-            }
-        )
+        res.status(500).send({
+            message: "db error"
+        })
     }
 })
-
 
 // app.use("/*", (req, res) => {
 //     console.log(" I am * handler");
