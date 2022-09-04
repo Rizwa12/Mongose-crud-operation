@@ -18,24 +18,43 @@ const productModel = mongoose.model('Product', productSchema);
 let app = express();
 app.use(express.json());
 app.use(cors());
-//get All Product
-app.get("/products",async(req,res)=>{
-  let result = await productModel
-  .find({})
-  .exec()
-  .catch(e=>{
-    console.log("error in db:",e);
-    res.status(500).send({message:"error in geeting all products"})
-    return;
-  })
-  res.send({
-    message:"all products success",
-    data:result
-  })
+
+//get all products
+app.get("/products", async (req, res) => {
+
+    let result = await productModel
+        .find({})
+        .exec()
+        .catch(e => {
+            console.log("error in db: ", e);
+            res.status(500).send({ message: "error in getting all products" });
+            return
+        })
+
+    res.send({
+        message: "all products success ",
+        data: result
+    });
+});
+//get product by id 
+app.get("/product/:id", async (req, res) => {
+
+    let result = await productModel
+        .findOne({_id: req.params.id})
+        .exec()
+        .catch(e => {
+            console.log("error in db: ", e);
+            res.status(500).send({ message: "error in getting all products" });
+            return
+        })
+
+    res.send({
+        message: "all products success ",
+        data: result
+    });
 });
 
-
-//Add Product
+//Add product
 app.post("/product", async (req, res) => {
 
     let body = req.body;
@@ -81,8 +100,50 @@ app.post("/product", async (req, res) => {
     console.log("result: ", result);
     res.send({ message: "product is added in database" });
 });
+//delete product
+app.delete("/product/:id", async (req, res) => {
+
+    let _id = req.params.id;
+
+    try {
+        const result = await productModel.findByIdAndDelete(_id);
+        console.log("Deleted product: ", result);
+        res.send({
+            message: "deleted"
+        });
+        return;
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send({
+            message: "db error"
+        })
+    }
 
 
+
+})
+//update product
+app.put("/product/:id",async(req,res)=>{
+    let _id = req.params.id;
+    let body = req.body;
+    try{
+        const result = await productModel.findByIdAndUpdate(_id,body);
+        console.log("updated product:",result);
+        res.send({
+            message:"updated"
+        });
+        return;
+
+    }catch(err){
+        console.log(err)
+        res.status(500).send(
+            {
+                message: "db error"
+            }
+        )
+    }
+})
 
 
 // app.use("/*", (req, res) => {
@@ -96,11 +157,13 @@ app.listen(PORT, () => {
     console.log(`app is running on ${PORT}`);
 });
 
-
-
 ///////////////////////////////////
 //mongoose.connect('mongodb+srv://abc:abc@cluster0.dcy08cl.mongodb.net/?retryWrites=true&w=majority');
-let dbURI = 'mongodb+srv://abc:abc@cluster0.dcy08cl.mongodb.net/ecommercedatabase?retryWrites=true&w=majority';
+// let dbURI = 'mongodb+srv://abc:abc@cluster0.dcy08cl.mongodb().net/ecommercedatabase?retryWrites=true&w=majority';
+// mongoose.connect(dbURI);
+
+////////////////mongodb connected disconnected events///////////////////////////////////////////////
+let dbURI =  'mongodb+srv://abc:abc@cluster0.dcy08cl.mongodb.net/ecommercedatabase?retryWrites=true&w=majority';
 mongoose.connect(dbURI);
 
 ////////////////mongodb connected disconnected events///////////////////////////////////////////////
@@ -117,6 +180,7 @@ mongoose.connection.on('error', function (err) {//any error
     console.log('Mongoose connection error: ', err);
     process.exit(1);
 });
+
 process.on('SIGINT', function () {/////this function will run jst before app is closing
     console.log("app is terminating");
     mongoose.connection.close(function () {
