@@ -12,9 +12,9 @@
 
 <body>
     <h1>Add a product</h1>
+
     <a href="./index.html">Home</a>
-    <a href="./product.html">All Products</a>
-  
+    <a href="./products.html">All Products</a>
 
 
     <form onsubmit="createProduct(); return false ">
@@ -59,17 +59,13 @@
 
     <script>
 
-      
-      console.log(window.location.href);
-      let baseUrl;
-      if(window.location.href.indexOf("https")===-1)
-      {
-        baseUrl = "http://localhost:3000";
-      }
-      else
-      {
-        baseUrl = "https://e-commerce-crud-operation.herokuapp.com/";
-      }
+        let baseUrl;
+
+        if (window.location.href.indexOf("https") === -1) {
+            baseUrl = "http://localhost:3000";
+        } else {
+            baseUrl = "https://e-commerce-crud-operation.herokuapp.com/";
+        }
 
 
         function createProduct() {
