@@ -2,6 +2,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors'
+//https://daveceddia.com/react-getting-started-tutorial/
 
 const productSchema = new mongoose.Schema({
     productName: String,
